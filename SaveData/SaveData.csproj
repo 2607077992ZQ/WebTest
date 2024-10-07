@@ -68,6 +68,7 @@
     <Compile Include="DataController\DBHelper.cs" />
     <Compile Include="DataController\DBInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemDLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

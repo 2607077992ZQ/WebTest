@@ -33,7 +33,6 @@ namespace WebTest
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.站点导入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.站点移除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.以Execl的方式进行编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,6 +42,8 @@ namespace WebTest
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.txtlog = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -50,6 +51,7 @@ namespace WebTest
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.versionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -60,7 +62,8 @@ namespace WebTest
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.编辑ToolStripMenuItem});
+            this.编辑ToolStripMenuItem,
+            this.versionToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(984, 25);
@@ -71,8 +74,7 @@ namespace WebTest
             // 
             this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.站点导入ToolStripMenuItem,
-            this.站点移除ToolStripMenuItem,
-            this.以Execl的方式进行编辑ToolStripMenuItem});
+            this.站点移除ToolStripMenuItem});
             this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
             this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.编辑ToolStripMenuItem.Text = "编辑";
@@ -90,12 +92,6 @@ namespace WebTest
             this.站点移除ToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.站点移除ToolStripMenuItem.Text = "站点移除";
             this.站点移除ToolStripMenuItem.Click += new System.EventHandler(this.站点移除ToolStripMenuItem_Click);
-            // 
-            // 以Execl的方式进行编辑ToolStripMenuItem
-            // 
-            this.以Execl的方式进行编辑ToolStripMenuItem.Name = "以Execl的方式进行编辑ToolStripMenuItem";
-            this.以Execl的方式进行编辑ToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
-            this.以Execl的方式进行编辑ToolStripMenuItem.Text = "以Excel的方式进行编辑站点";
             // 
             // tableLayoutPanel1
             // 
@@ -197,7 +193,9 @@ namespace WebTest
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.button7, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.button9, 1, 3);
+            this.tableLayoutPanel3.Controls.Add(this.button8, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.button7, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.button6, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.button5, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.button4, 1, 1);
@@ -221,12 +219,40 @@ namespace WebTest
             this.tableLayoutPanel3.Size = new System.Drawing.Size(185, 259);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
+            // button9
+            // 
+            this.button9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button9.Font = new System.Drawing.Font("宋体", 9F);
+            this.button9.Location = new System.Drawing.Point(93, 76);
+            this.button9.Margin = new System.Windows.Forms.Padding(1);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(91, 23);
+            this.button9.TabIndex = 8;
+            this.button9.Text = "计划启动";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button8
+            // 
+            this.button8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button8.Font = new System.Drawing.Font("宋体", 9F);
+            this.button8.Location = new System.Drawing.Point(1, 76);
+            this.button8.Margin = new System.Windows.Forms.Padding(1);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(90, 23);
+            this.button8.TabIndex = 7;
+            this.button8.Text = "设置定时计划";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
             // button7
             // 
             this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button7.Font = new System.Drawing.Font("宋体", 9F);
-            this.button7.Location = new System.Drawing.Point(1, 76);
+            this.button7.Location = new System.Drawing.Point(1, 101);
             this.button7.Margin = new System.Windows.Forms.Padding(1);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(90, 23);
@@ -319,6 +345,13 @@ namespace WebTest
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // versionToolStripMenuItem
+            // 
+            this.versionToolStripMenuItem.Enabled = false;
+            this.versionToolStripMenuItem.Name = "versionToolStripMenuItem";
+            this.versionToolStripMenuItem.Size = new System.Drawing.Size(67, 21);
+            this.versionToolStripMenuItem.Text = "Version:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -358,7 +391,6 @@ namespace WebTest
         private System.Windows.Forms.ToolStripMenuItem 站点移除ToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ToolStripMenuItem 以Execl的方式进行编辑ToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TextBox txtlog;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
@@ -373,5 +405,8 @@ namespace WebTest
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.ToolStripMenuItem versionToolStripMenuItem;
     }
 }

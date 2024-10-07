@@ -14,6 +14,7 @@ using System.Windows.Forms;
 
 using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.Formula.Functions;
 
 namespace WebTest
 {
@@ -25,6 +26,7 @@ namespace WebTest
         }
 
         #region
+        private static string ConfigData = Environment.CurrentDirectory + @"\data\config.ini";
         private string tempPath = Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.Machine);
         private List<Thread> ThreadPool = new List<Thread>();
 
@@ -40,6 +42,8 @@ namespace WebTest
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            versionToolStripMenuItem.Text += Application.ProductVersion;
+
             new Thread(() =>
             {
                 SaveData.DataController.DBInit Init = new SaveData.DataController.DBInit();
@@ -100,9 +104,9 @@ namespace WebTest
 
         private StateEnum GetHttpConnect(string url)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url.Trim().Replace("\r\n",""));
             try
             {
+                var request = (HttpWebRequest)WebRequest.Create(url.Trim().Replace("\r\n", ""));
                 var response = (HttpWebResponse)request.GetResponse();
                 var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd().ToLower();
                 if (responseString.Contains("<title>系统维护</title>"))
@@ -232,30 +236,49 @@ namespace WebTest
 
             new Thread(() =>
             {
-                Thread.Sleep(5000);
-                new Thread(() =>
-                {
-                    while (true)
-                    {
-                        try
-                        {
-                            using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
-                            {
-                                break;
-                            }
-                        }
-                        catch (IOException)
-                        {
-                        }
-                        Thread.Sleep(1000);
-                    }
+                var th = IsOpenAndClose(path);
+                th.Join();
 
-                    AddUrlINFO(path);
-                    File.Delete(path);
-                })
-                { IsBackground = true }.Start();
+                AddUrlINFO(path);
+                File.Delete(path);
             })
             { IsBackground = true }.Start();
+        }
+
+        private void RemoveUrlInfo(string path)
+        {
+            using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                StringBuilder NotDel = new StringBuilder();
+
+                IWorkbook workbook = new HSSFWorkbook(fileStream);
+                ISheet sheet = workbook.GetSheetAt(0);
+
+                for (int rowIndex = 1; rowIndex <= sheet.LastRowNum; rowIndex++)
+                {
+                    IRow row = sheet.GetRow(rowIndex);
+                    if (row != null)
+                    {
+                        ICell cell = row.GetCell(0);
+                        if (cell != null)
+                        {
+                            if (NotDel.ToString() == string.Empty)
+                            {
+                                NotDel.Append($"'{cell.StringCellValue}'");
+                            }
+                            else
+                                NotDel.Append($",'{cell.StringCellValue}'");
+                        }
+                    }
+                }
+
+                if (NotDel.ToString() != string.Empty)
+                {
+                    SaveData.DataController.DBHelper db = new SaveData.DataController.DBHelper();
+                    int i = db.Execute($"DELETE FROM main.webTable WHERE url NOT IN ({NotDel})");
+                }
+            }
+
         }
 
         private void AddUrlINFO(string path)
@@ -285,7 +308,89 @@ namespace WebTest
 
         private void 站点移除ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            IWorkbook workbook = new HSSFWorkbook();
+            ISheet sheet = workbook.CreateSheet("web");
+           
+            SaveData.DataController.DBHelper db = new SaveData.DataController.DBHelper();
+            var table = db.QueryTable("SELECT * FROM \"main\".\"webTable\"");
+            int rows = 0;
+            foreach (DataRow item in table.Rows)
+            {
+                IRow row = sheet.CreateRow(rows);
+                row.CreateCell(0).SetCellValue(item["url"].ToString());
+            }
+            string path = tempPath + $"\\{DateTime.Now.ToString("yyyyMMddHHmmss")}.xls";
+            using (FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
+            {
+                workbook.Write(fileStream);
+            }
+            Process.Start(path);
 
+            new Thread(() =>
+            {
+                var th = IsOpenAndClose(path);
+                th.Join();
+
+                RemoveUrlInfo(path);
+                File.Delete(path);
+            })
+            { IsBackground = true }.Start();
+
+        }
+
+        /// <summary>
+        /// 已经打开文件并且已经关闭了该文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private Thread IsOpenAndClose(string path)
+        {
+            Thread th1 = new Thread(() =>
+            {
+                while (true)
+                {
+                lable1:
+                    Thread.Sleep(1000);
+                    try
+                    {
+                        using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                        {
+                            goto lable1;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //MessageBox.Show("ok");
+                        break;
+                    }
+                }
+
+            })
+            { IsBackground = true, Name = "open" };
+
+            th1.Start();
+            Thread th2 = new Thread(() =>
+            {
+                th1.Join();
+                while (true)
+                {
+                    try
+                    {
+                        using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                        {
+                            break;
+                        }
+                    }
+                    catch (IOException)
+                    {
+                    }
+                    Thread.Sleep(1000);
+                }
+            })
+            { IsBackground = true, Name = "close" };
+            th2.Start();
+
+            return th2;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -299,6 +404,82 @@ namespace WebTest
         {
             dataGridView1.Rows.Clear();
             Init_UI();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            SaveData.SystemDLL configINI = new SaveData.SystemDLL();
+            configINI.PATH = ConfigData;
+
+            SetTime time = new SetTime();
+            if (File.Exists(ConfigData))
+            {
+                try
+                {
+                    time.Time = Convert.ToDateTime(configINI.INIRead("TIME"));
+                }
+                catch (Exception)
+                {
+                    time.Time = DateTime.Now;
+                }
+            }
+            
+            if (time.ShowDialog() == DialogResult.OK)
+            {
+                DateTime timeData = time.Time;
+                configINI.INIWrite("TIME", $"{timeData.Hour}:{timeData.Minute}:{timeData.Second}");
+            }
+            time.Dispose();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string err = "还未设置计划时间!";
+
+            if (File.Exists(ConfigData))
+            {
+                SaveData.SystemDLL configINI = new SaveData.SystemDLL();
+                configINI.PATH = ConfigData;
+
+                try
+                {
+                    DateTime SetTime = Convert.ToDateTime(configINI.INIRead("TIME"));
+                    DateTime current = DateTime.Now;
+                    TimeSpan span = SetTime - current;
+
+                    if(span < TimeSpan.Zero)
+                    {
+                        SetTime = SetTime.AddDays(1);
+                        span = SetTime - current;
+                    }
+
+                    System.Threading.Timer time = new System.Threading.Timer((object obj) =>
+                    {
+                        this.Activate();
+
+                        BeginInvoke(new Action(delegate
+                        {
+                            button5_Click(null, null);
+                            button9.Enabled = true;
+                        }));
+                    }, null, (int)span.TotalMilliseconds, Timeout.Infinite);
+                    
+                    button9.Enabled = false;
+                    ShowLog("计划开始");
+                    ShowLog($"将于{SetTime.ToString("yyyy/MM/dd HH:mm:ss")}开始任务");
+                    ShowLog($"等待时间为{span.Hours}:{span.Minutes}:{span.Seconds}");
+
+                }
+                catch (Exception)
+                {
+                    ShowLog(err);
+                }
+            }
+            else
+            {
+                ShowLog(err);
+            }
+
         }
     }
 }
