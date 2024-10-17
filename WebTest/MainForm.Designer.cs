@@ -29,16 +29,25 @@ namespace WebTest
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.站点导入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.站点移除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.versionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column5 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.全选ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.选择反转ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.删除选择ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.结束删除操作ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.txtlog = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -51,10 +60,11 @@ namespace WebTest
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.versionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button10 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
@@ -82,16 +92,23 @@ namespace WebTest
             // 站点导入ToolStripMenuItem
             // 
             this.站点导入ToolStripMenuItem.Name = "站点导入ToolStripMenuItem";
-            this.站点导入ToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.站点导入ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.站点导入ToolStripMenuItem.Text = "站点导入";
             this.站点导入ToolStripMenuItem.Click += new System.EventHandler(this.站点导入ToolStripMenuItem_Click);
             // 
             // 站点移除ToolStripMenuItem
             // 
             this.站点移除ToolStripMenuItem.Name = "站点移除ToolStripMenuItem";
-            this.站点移除ToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.站点移除ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.站点移除ToolStripMenuItem.Text = "站点移除";
             this.站点移除ToolStripMenuItem.Click += new System.EventHandler(this.站点移除ToolStripMenuItem_Click);
+            // 
+            // versionToolStripMenuItem
+            // 
+            this.versionToolStripMenuItem.Enabled = false;
+            this.versionToolStripMenuItem.Name = "versionToolStripMenuItem";
+            this.versionToolStripMenuItem.Size = new System.Drawing.Size(67, 21);
+            this.versionToolStripMenuItem.Text = "Version:";
             // 
             // tableLayoutPanel1
             // 
@@ -117,10 +134,13 @@ namespace WebTest
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column5,
             this.Column1,
             this.Column2,
             this.Column3,
-            this.Column4});
+            this.Column4,
+            this.Column6});
+            this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.MultiSelect = false;
@@ -132,6 +152,15 @@ namespace WebTest
             this.dataGridView1.Size = new System.Drawing.Size(781, 530);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.TabStop = false;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "选择";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Visible = false;
+            this.Column5.Width = 50;
             // 
             // Column1
             // 
@@ -160,6 +189,58 @@ namespace WebTest
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
             this.Column4.Width = 180;
+            // 
+            // Column6
+            // 
+            this.Column6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Column6.HeaderText = "操作";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            this.Column6.Text = "111";
+            this.Column6.Visible = false;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Enabled = false;
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.全选ToolStripMenuItem,
+            this.选择反转ToolStripMenuItem,
+            this.删除选择ToolStripMenuItem,
+            this.结束删除操作ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 92);
+            // 
+            // 全选ToolStripMenuItem
+            // 
+            this.全选ToolStripMenuItem.Enabled = false;
+            this.全选ToolStripMenuItem.Name = "全选ToolStripMenuItem";
+            this.全选ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.全选ToolStripMenuItem.Text = "全选";
+            this.全选ToolStripMenuItem.Click += new System.EventHandler(this.全选ToolStripMenuItem_Click);
+            // 
+            // 选择反转ToolStripMenuItem
+            // 
+            this.选择反转ToolStripMenuItem.Enabled = false;
+            this.选择反转ToolStripMenuItem.Name = "选择反转ToolStripMenuItem";
+            this.选择反转ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.选择反转ToolStripMenuItem.Text = "选择反转";
+            this.选择反转ToolStripMenuItem.Click += new System.EventHandler(this.选择反转ToolStripMenuItem_Click);
+            // 
+            // 删除选择ToolStripMenuItem
+            // 
+            this.删除选择ToolStripMenuItem.Enabled = false;
+            this.删除选择ToolStripMenuItem.Name = "删除选择ToolStripMenuItem";
+            this.删除选择ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.删除选择ToolStripMenuItem.Text = "删除选择项";
+            this.删除选择ToolStripMenuItem.Click += new System.EventHandler(this.删除选择ToolStripMenuItem_Click);
+            // 
+            // 结束删除操作ToolStripMenuItem
+            // 
+            this.结束删除操作ToolStripMenuItem.Enabled = false;
+            this.结束删除操作ToolStripMenuItem.Name = "结束删除操作ToolStripMenuItem";
+            this.结束删除操作ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.结束删除操作ToolStripMenuItem.Text = "结束删除操作";
+            this.结束删除操作ToolStripMenuItem.Click += new System.EventHandler(this.结束删除操作ToolStripMenuItem_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -193,6 +274,7 @@ namespace WebTest
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.button10, 1, 4);
             this.tableLayoutPanel3.Controls.Add(this.button9, 1, 3);
             this.tableLayoutPanel3.Controls.Add(this.button8, 0, 3);
             this.tableLayoutPanel3.Controls.Add(this.button7, 0, 4);
@@ -216,6 +298,7 @@ namespace WebTest
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(185, 259);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
@@ -345,12 +428,19 @@ namespace WebTest
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // versionToolStripMenuItem
+            // button10
             // 
-            this.versionToolStripMenuItem.Enabled = false;
-            this.versionToolStripMenuItem.Name = "versionToolStripMenuItem";
-            this.versionToolStripMenuItem.Size = new System.Drawing.Size(67, 21);
-            this.versionToolStripMenuItem.Text = "Version:";
+            this.button10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button10.Font = new System.Drawing.Font("宋体", 9F);
+            this.button10.Location = new System.Drawing.Point(93, 101);
+            this.button10.Margin = new System.Windows.Forms.Padding(1);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(91, 23);
+            this.button10.TabIndex = 9;
+            this.button10.Text = "实时/终止";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // MainForm
             // 
@@ -375,6 +465,7 @@ namespace WebTest
             this.menuStrip1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -401,12 +492,20 @@ namespace WebTest
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.ToolStripMenuItem versionToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 选择反转ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 删除选择ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 结束删除操作ToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.ToolStripMenuItem versionToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewButtonColumn Column6;
+        private System.Windows.Forms.ToolStripMenuItem 全选ToolStripMenuItem;
+        private System.Windows.Forms.Button button10;
     }
 }
